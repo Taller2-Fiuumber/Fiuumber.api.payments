@@ -1,0 +1,27 @@
+openapi: '3.0.2'
+info:
+  title: Fiuumber API
+  version: '1.0'
+servers:
+  - url: https://fiuumber-api.herokuapp.com/
+paths:
+  /:
+    get:
+      responses:
+        '200':
+          description: Fiuumber server
+          content:
+              application/json:
+                schema:
+                  type: string
+  /api/something:
+    get:
+      responses:
+        '200':
+          description: Array of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string

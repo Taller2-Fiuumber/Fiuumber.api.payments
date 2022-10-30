@@ -1,0 +1,46 @@
+# extensions
+lib-cov
+*.seed
+*.log
+*.csv
+*.dat
+*.out
+*.pid
+*.gz
+*.swp
+
+# Dependency directory
+node_modules
+bower_components
+package-lock.json
+
+# Coveralls
+.nyc_output
+coverage
+
+# Benchmarking
+benchmarks/graphs
+
+# Production
+/dist
+
+# API keys and secrets
+.env
+
+# ignore yarn.lock
+yarn.lock
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Editors
+.idea
+*.iml
+
+# Database
+javascript/**/migrations/
+typescript/**/migrations/
+misc/**/migrations/
+databases/**/migrations/
+experimental/**/*.db
