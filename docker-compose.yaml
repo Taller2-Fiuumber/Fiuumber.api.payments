@@ -1,0 +1,53 @@
+version: '3'
+services:
+
+  database:
+    image: postgres:latest
+    restart: always
+    environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: example
+        POSTGRES_DB: postgres
+    ports:
+      - "5431:5432"
+    networks:
+      - default
+    volumes:
+      - database_data:/var/lib/postgresql/data
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: "sh"
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+    ports:
+      - "8082:8082"
+    expose:
+      - 8082
+    volumes:
+        - ./:/app
+    links:
+      - database
+    depends_on:
+      - database
+    environment:
+        DATABASE_URL: "postgres://postgres:example@database:5432/postgres"
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: example
+        POSTGRES_DB: postgres
+        PORT: 8082
+    networks:
+      - default
+      - gateway
+networks:
+  default:
+    name: localdev
+  gateway:
+    name: gateway
+    external: true
+
+volumes:
+  database_data:
+    driver: local
