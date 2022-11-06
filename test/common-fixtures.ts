@@ -8,7 +8,7 @@ const { loadFixture } = waffle;
 export async function fixtureDeployedBasicPayments(): Promise<BasicPayments> {
   await deployments.fixture();
   const { deployer } = await getNamedAccounts();
-  const basicPayments = <unknown>await ethers.getContract("BasicPayments", deployer);
+  const basicPayments = <unknown>await ethers.getContractAt("BasicPayments", deployer);
   return basicPayments as BasicPayments;
 }
 
