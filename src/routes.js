@@ -3,50 +3,60 @@ const getWalletsData = require("./handlers/getWalletsHandler");
 const createWallet = require("./handlers/createWalletHandler");
 const createDeposit = require("./handlers/createDepositHandler");
 const getDeposit = require("./handlers/getDepositHandler");
+const getHome = require("./handlers/getHomeHandler");
 
 function getWalletDataRoute({ services, config }) {
-  return {
-    method: "GET",
-    url: "/wallet/:id",
-    schema: getWalletData.schema(config),
-    handler: getWalletData.handler({ config, ...services }),
-  };
+    return {
+        method: "GET",
+        url: "/api/wallets-service/wallet/:id",
+        schema: getWalletData.schema(config),
+        handler: getWalletData.handler({ config, ...services }),
+    };
 }
 
 function getWalletsDataRoute({ services, config }) {
-  return {
-    method: "GET",
-    url: "/wallet",
-    schema: getWalletsData.schema(config),
-    handler: getWalletsData.handler({ config, ...services }),
-  };
+    return {
+        method: "GET",
+        url: "/api/wallets-service/wallet",
+        schema: getWalletsData.schema(config),
+        handler: getWalletsData.handler({ config, ...services }),
+    };
 }
 
 function createWalletRoute({ services, config }) {
-  return {
-    method: "POST",
-    url: "/wallet",
-    schema: createWallet.schema(config),
-    handler: createWallet.handler({ config, ...services }),
-  };
+    return {
+        method: "POST",
+        url: "/api/wallets-service/wallet",
+        schema: createWallet.schema(config),
+        handler: createWallet.handler({ config, ...services }),
+    };
 }
 
 function createDepositRoute({ services, config }) {
-  return {
-    method: "POST",
-    url: "/deposit",
-    schema: createDeposit.schema(config),
-    handler: createDeposit.handler({ config, ...services }),
-  };
+    return {
+        method: "POST",
+        url: "/api/wallets-service/deposit",
+        schema: createDeposit.schema(config),
+        handler: createDeposit.handler({ config, ...services }),
+    };
 }
 
 function getDepositRoute({ services, config }) {
-  return {
-    method: "GET",
-    url: "/deposit/:txHash",
-    schema: getDeposit.schema(config),
-    handler: getDeposit.handler({ config, ...services }),
-  };
+    return {
+        method: "GET",
+        url: "/api/wallets-service/deposit/:txHash",
+        schema: getDeposit.schema(config),
+        handler: getDeposit.handler({ config, ...services }),
+    };
 }
 
-module.exports = [getWalletDataRoute, getWalletsDataRoute, createWalletRoute, createDepositRoute, getDepositRoute];
+function getHomeRoute({ services, config }) {
+    return {
+        method: "GET",
+        url: "/api/wallets-service/",
+        schema: getHome.schema(config),
+        handler: getHome.handler({ config, ...services }),
+    };
+}
+
+module.exports = [getWalletDataRoute, getWalletsDataRoute, createWalletRoute, createDepositRoute, getDepositRoute, getHomeRoute];

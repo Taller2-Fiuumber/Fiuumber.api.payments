@@ -1,0 +1,217 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Fiuumber User API",
+        "description": "CRUD",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "servers": [{
+            "url": "https://fiuumber-api-wallets.herokuapp.com/api/wallets-service",
+            "description": "Heroku"
+        },
+        {
+            "url": "http://localhost:8082/api/wallets-service",
+            "description": "Localhost in port 8082"
+        }
+    ],
+    "tags": [{
+        "name": "Fiuumber - Wallets",
+        "description": "API for wallets in the system"
+    }],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/wallet/page/{skip}&{take}": {
+            "get": {
+                "tags": [
+                    "Wallet"
+                ],
+                "parameters": [{
+                        "in": "path",
+                        "name": "skip",
+                        "required": true,
+                        "description": "Number of wallets to skip",
+                        "schema": {
+                            "type": "integer",
+                            "example": 10
+                        }
+                    },
+                    {
+                        "in": "path",
+                        "name": "take",
+                        "required": true,
+                        "description": "Number of wallets to take",
+                        "schema": {
+                            "type": "integer",
+                            "example": 5
+                        }
+                    }
+                ],
+                "summary": "Get wallets with given ID",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Wallet"
+                        }
+                    },
+                    "404": {
+                        "description": "Failed. Wallet not found."
+                    }
+                }
+            }
+        },
+        "/wallet/{id}": {
+            "parameters": [{
+                "in": "path",
+                "name": "id",
+                "required": true,
+                "description": "Wallet id",
+                "schema": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }],
+            "get": {
+                "tags": [
+                    "Wallet"
+                ],
+                "summary": "Get wallet with given ID",
+                "parameters": [{
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "description": "Wallet id",
+                    "schema": {
+                        "type": "integer",
+                        "example": 1
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Wallet"
+                        }
+                    },
+                    "404": {
+                        "description": "Failed. Wallet not found."
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete wallet with given ID",
+                "tags": [
+                    "Wallet"
+                ],
+                "parameters": [{
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "description": "Wallet id",
+                    "schema": {
+                        "type": "integer",
+                        "example": 1
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/id"
+                        }
+                    },
+                    "404": {
+                        "description": "Failed. Wallet not found."
+                    }
+                }
+            }
+        },
+        "/wallet": {
+            "get": {
+                "tags": [
+                    "Wallet"
+                ],
+                "summary": "Get all wallets in system",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Wallet"
+                        }
+                    }
+                }
+            },
+
+            "post": {
+                "tags": [
+                    "Wallet"
+                ],
+                "summary": "Create a new wallet in system",
+                "requestBody": {
+                    "description": "Wallet Object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/definitions/NewWallet"
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/id"
+                        }
+                    },
+                    "400": {
+                        "description": "Failed. Bad post data."
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "id": {
+            "properties": {
+                "uuid": {
+                    "type": "string"
+                }
+            }
+        },
+        "Wallet": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "number",
+                    "example": 1
+                },
+                "address": {
+                    "type": "string",
+                    "example": "0x6EB5d800214510B5d6e30c249C6EEF6651Ec74a6"
+                },
+                "privateKey": {
+                    "type": "string",
+                    "example": "0x8d731a0107299782fa4a572655f51abd4dc414dc95ea50984d3ce7a4a7d86cec"
+                }
+            }
+        },
+        "NewWallet": {
+            "type": "object",
+            "properties": {}
+        }
+    }
+}
