@@ -6,7 +6,7 @@ ARG database_url
 ARG database_name
 
 ENV DATABASE_URL=${database_url}
-ENV DATABASE_URL=${database_name}
+ENV DATABASE_NAME=${database_name}
 
 RUN mkdir /app
 WORKDIR /app
