@@ -1,18 +1,20 @@
 # syntax=docker/dockerfile:1
 
-FROM node:18-alpine3.15 as builder
+FROM node:12.18.1
 
 ARG database_url
-ENV DATABASE_URL=$database_url
+ARG database_name
+
+ENV DATABASE_URL=${database_url}
+ENV DATABASE_URL=${database_name}
 
 RUN mkdir /app
 WORKDIR /app
 COPY . /app
+
 RUN npm install
-RUN npm run prisma:generate
-RUN npm run build
 
-# Expose is NOT supported by Heroku
-# $PORT is set by Heroku
+RUN adduser -D myuser
+USER myuser
 
-CMD ["npm", "start"]
+CMD npm start

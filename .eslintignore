@@ -1,7 +1,4 @@
 # folders
-.coverage_artifacts/
-.coverage_cache/
-.coverage_contracts/
 artifacts/
 build/
 cache/
@@ -11,12 +8,13 @@ lib/
 node_modules/
 typechain/
 profiles/
+docs/
+.gitlab/
+.vscode/
+src/
 deployments/
+
 # files
-.env
-*.env
-*.log
-*.tsbuildinfo
+.solcover.js
 coverage.json
-npm-debug.log*
-database_data/
+tsconfig.json
