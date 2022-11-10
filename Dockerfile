@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM node:12.18.1
+FROM node:12.18.1 as builder
 
 ARG database_url
 ARG database_name
