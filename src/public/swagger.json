@@ -29,46 +29,7 @@
         "application/json"
     ],
     "paths": {
-        "/wallet/page/{skip}&{take}": {
-            "get": {
-                "tags": [
-                    "Wallet"
-                ],
-                "parameters": [{
-                        "in": "path",
-                        "name": "skip",
-                        "required": true,
-                        "description": "Number of wallets to skip",
-                        "schema": {
-                            "type": "integer",
-                            "example": 10
-                        }
-                    },
-                    {
-                        "in": "path",
-                        "name": "take",
-                        "required": true,
-                        "description": "Number of wallets to take",
-                        "schema": {
-                            "type": "integer",
-                            "example": 5
-                        }
-                    }
-                ],
-                "summary": "Get wallets with given ID",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Wallet"
-                        }
-                    },
-                    "404": {
-                        "description": "Failed. Wallet not found."
-                    }
-                }
-            }
-        },
+
         "/wallet/{id}": {
             "parameters": [{
                 "in": "path",
@@ -106,35 +67,9 @@
                         "description": "Failed. Wallet not found."
                     }
                 }
-            },
-            "delete": {
-                "summary": "Delete wallet with given ID",
-                "tags": [
-                    "Wallet"
-                ],
-                "parameters": [{
-                    "in": "path",
-                    "name": "id",
-                    "required": true,
-                    "description": "Wallet id",
-                    "schema": {
-                        "type": "integer",
-                        "example": 1
-                    }
-                }],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/id"
-                        }
-                    },
-                    "404": {
-                        "description": "Failed. Wallet not found."
-                    }
-                }
             }
         },
+
         "/wallet": {
             "get": {
                 "tags": [
@@ -182,8 +117,73 @@
                     }
                 }
             }
+        },
+
+        "/deposit": {
+            "post": {
+                "tags": [
+                    "Deposit"
+                ],
+                "summary": "Get wallet with given ID",
+                "requestBody": {
+                    "description": "Administrator Object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/definitions/Deposit"
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Deposit"
+                        }
+                    },
+                    "404": {
+                        "description": "Failed. Deposit not found."
+                    }
+                }
+            }
+        },
+
+        "/deposit/{depositTxHash}": {
+            "parameters": [{
+                "in": "path",
+                "name": "depositTxHash",
+                "required": true,
+                "description": "Deposit transaction Hash id",
+                "schema": {
+                    "type": "string",
+                    "example": "0x921340bfe5f055871a7b85e64c8992f0c9f7871b2ca4303e695a9915375c951f"
+                }
+            }],
+            "get": {
+                "tags": [
+                    "Deposit"
+                ],
+                "summary": "Get wallet with given ID",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Deposit"
+                        }
+                    },
+                    "404": {
+                        "description": "Failed. Deposit not found."
+                    }
+                }
+            }
         }
     },
+
     "definitions": {
         "id": {
             "properties": {
@@ -210,6 +210,27 @@
                 "privateKey": {
                     "type": "string",
                     "example": "0x8d731a0107299782fa4a572655f51abd4dc414dc95ea50984d3ce7a4a7d86cec"
+                }
+            }
+        },
+        "Deposit": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "number",
+                    "example": 1
+                },
+                "userId": {
+                    "type": "senderId",
+                    "example": 1
+                },
+                "amountInEthers": {
+                    "type": "string",
+                    "example": "0.01"
+                },
+                "senderId": {
+                    "type": "numebr",
+                    "example": 2
                 }
             }
         }
