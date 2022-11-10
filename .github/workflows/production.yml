@@ -1,4 +1,4 @@
-name: Heroku
+name: Production
 on:
   push:
     branches:
@@ -12,12 +12,14 @@ jobs:
       contents: read
       packages: write
     env:
+      REGISTRY_URL: registry.gitlab.com/fiuba-memo2/tp2-20221
       CI_IMAGE_REGISTRY: ghcr.io
       CI_OWNER: Taller2-Fiuumber
       CI_IMAGE_NAME: ${{ github.repository }}
       GITHUB_TOKEN: ${{ github.token }}
       GITHUB_USERNAME: ${{ github.actor }}
-      HEROKU_APP: fiuumber-api-payments
+      HEROKU_APP: fiuumber-api-users
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
     steps:
       - uses: actions/checkout@master
 
@@ -37,8 +39,9 @@ jobs:
           echo "IMAGE_TAG=$(echo $IMAGE_NAME:$VERSION)" >> $GITHUB_ENV
 
       - name: Build image
-        run: docker build -t ${{ env.IMAGE_TAG }} . --build-arg database_url=${{ secrets.DATABASE_URL }} --build-arg database_name=${{ secrets.DATABASE_NAME }}
-
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: docker build -t ${{ env.IMAGE_TAG }} . --build-arg database_url=${{ env.DATABASE_URL }}
       - name: Push image to Github Container Registry
         run: docker push ${{ env.IMAGE_TAG }}
 
@@ -55,9 +58,7 @@ jobs:
       - name: Push container to Heroku Container Registry
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        run: heroku container:push web
-          --arg database_url=${{ secrets.DATABASE_URL }},database_name=${{ secrets.DATABASE_NAME }}
-          --app ${{ env.HEROKU_APP}}
+        run: heroku container:push web --arg database_url=${{ env.DATABASE_URL }} --app ${{ env.HEROKU_APP}}
 
       - name: Release container to Heroku Container Registry
         env:
