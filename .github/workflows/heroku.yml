@@ -1,4 +1,4 @@
-name: Production
+name: Heroku
 on:
   push:
     branches:
@@ -41,7 +41,7 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
-          run: docker build -t ${{ env.IMAGE_TAG }} .
+        run: docker build -t ${{ env.IMAGE_TAG }} .
             --build-arg database_url=${{ env.DATABASE_URL }}
             --build-arg database_name=${{ env.DATABASE_NAME }}
       - name: Push image to Github Container Registry
