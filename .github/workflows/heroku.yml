@@ -6,7 +6,6 @@ on:
       - 'infra/heroku-pipeline'
 jobs:
   build-and-push-image:
-    needs: [unit-test]
     name: Build and Deploy
     runs-on: ubuntu-latest
     permissions:
