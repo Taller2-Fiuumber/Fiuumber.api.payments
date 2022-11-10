@@ -27,7 +27,7 @@ jobs:
         run: >
           git config --global url."https://github.com/".insteadOf
           ssh://git@github.com/
-      - run: npm ci
+      - run: npm install
       - name: Deploy
         env:
           ALCHEMY_API_KEY: ${{secrets.ALCHEMY_API_KEY}}
