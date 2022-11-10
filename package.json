@@ -73,6 +73,7 @@
     ],
     "scripts": {
         "prepare": "husky install",
+        "postinstall": "npm run compile",
         "clean": "hardhat clean",
         "compile": "hardhat compile",
         "coverage": "hardhat coverage --solcoverjs ./.solcover.js --temp artifacts --testfiles \"./test/**/*.ts\"",
@@ -88,9 +89,8 @@
         "deploy-local": "hardhat deploy --network hardhat",
         "start": "node src/server",
         "release": "standard-version",
-        "prisma:setup-dev": "npm run prisma:generate && npm run prisma:migrate",
-        "prisma:migrate": "prisma migrate dev --schema=src/infraestructure/prisma/schema.prisma",
-        "prisma:generate": "prisma generate --schema=src/infraestructure/prisma/schema.prisma",
-        "prisma:seed": "ts-node src/infraestructure/prisma/seed.ts"
+    },
+    "engines": {
+        "node": "12.x"
     }
 }
