@@ -5,9 +5,9 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@fastify/mongodb": "^6.1.0",
         "@fastify/swagger": "^8.1.0",
         "@fastify/swagger-ui": "^1.2.0",
-        "fastify-swagger": "^4.12.6",
         "hardhat": "^2.12.1",
         "hardhat-deploy": "^0.11.18",
         "hardhat-deploy-ethers": "^0.3.0-beta.13",
@@ -88,6 +88,10 @@
         "deploy-goerli": "hardhat deploy --network goerli",
         "deploy-local": "hardhat deploy --network hardhat",
         "start": "node src/server",
-        "release": "standard-version"
+        "release": "standard-version",
+        "prisma:setup-dev": "npm run prisma:generate && npm run prisma:migrate",
+        "prisma:migrate": "prisma migrate dev --schema=src/infraestructure/prisma/schema.prisma",
+        "prisma:generate": "prisma generate --schema=src/infraestructure/prisma/schema.prisma",
+        "prisma:seed": "ts-node src/infraestructure/prisma/seed.ts"
     }
 }

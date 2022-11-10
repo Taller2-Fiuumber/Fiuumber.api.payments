@@ -2,18 +2,18 @@ version: '3'
 services:
 
   database:
-    image: postgres:latest
+    image: mongo:latest
     restart: always
     environment:
-        POSTGRES_USER: postgres
-        POSTGRES_PASSWORD: example
-        POSTGRES_DB: postgres
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
     ports:
-      - "5431:5432"
+      - "27017:27017"
     networks:
       - default
+      - gateway
     volumes:
-      - database_data:/var/lib/postgresql/data
+      - ./database_data:/data/db
 
   web:
     build:
@@ -33,11 +33,11 @@ services:
     depends_on:
       - database
     environment:
-        DATABASE_URL: "postgres://postgres:example@database:5432/postgres"
-        POSTGRES_USER: postgres
-        POSTGRES_PASSWORD: example
-        POSTGRES_DB: postgres
-        PORT: 8082
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      DATABASE_URL: mongodb://root:example@database:27017/
+      DB_NAME: fiuumber
+      PORT: 8082
     networks:
       - default
       - gateway

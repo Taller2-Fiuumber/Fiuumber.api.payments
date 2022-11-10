@@ -8,7 +8,7 @@ const getHome = require("./handlers/getHomeHandler");
 function getWalletDataRoute({ services, config }) {
     return {
         method: "GET",
-        url: "/api/wallets-service/wallet/:id",
+        url: "/api/wallets-service/wallet/:userId",
         schema: getWalletData.schema(config),
         handler: getWalletData.handler({ config, ...services }),
     };
@@ -26,7 +26,7 @@ function getWalletsDataRoute({ services, config }) {
 function createWalletRoute({ services, config }) {
     return {
         method: "POST",
-        url: "/api/wallets-service/wallet",
+        url: "/api/wallets-service/wallet/:userId",
         schema: createWallet.schema(config),
         handler: createWallet.handler({ config, ...services }),
     };
@@ -53,7 +53,7 @@ function getDepositRoute({ services, config }) {
 function getHomeRoute({ services, config }) {
     return {
         method: "GET",
-        url: "/api/wallets-service/",
+        url: "/",
         schema: getHome.schema(config),
         handler: getHome.handler({ config, ...services }),
     };

@@ -76,7 +76,7 @@
                 "required": true,
                 "description": "Wallet id",
                 "schema": {
-                    "type": "integer",
+                    "type": "number",
                     "example": 1
                 }
             }],
@@ -149,24 +149,24 @@
                         }
                     }
                 }
-            },
-
+            }
+        },
+        "/wallet/{userId}": {
             "post": {
                 "tags": [
                     "Wallet"
                 ],
                 "summary": "Create a new wallet in system",
-                "requestBody": {
-                    "description": "Wallet Object",
+                "parameters": [{
+                    "in": "path",
+                    "name": "userId",
                     "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/definitions/NewWallet"
-                            }
-                        }
+                    "description": "Wallet's user id",
+                    "schema": {
+                        "type": "number",
+                        "example": 1
                     }
-                },
+                }],
                 "produces": [
                     "application/json"
                 ],
@@ -174,7 +174,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/id"
+                            "$ref": "#/definitions/Wallet"
                         }
                     },
                     "400": {
@@ -195,7 +195,11 @@
         "Wallet": {
             "type": "object",
             "properties": {
-                "id": {
+                "_id": {
+                    "type": "number",
+                    "example": 1
+                },
+                "userId": {
                     "type": "number",
                     "example": 1
                 },
@@ -208,10 +212,6 @@
                     "example": "0x8d731a0107299782fa4a572655f51abd4dc414dc95ea50984d3ce7a4a7d86cec"
                 }
             }
-        },
-        "NewWallet": {
-            "type": "object",
-            "properties": {}
         }
     }
 }
