@@ -35,5 +35,11 @@ jobs:
           ALCHEMY_API_KEY: ${{ secrets.ALCHEMY_API_KEY }}
         run: npm install
 
-      - run: npm test
-      - run: npm run lint
+      - env:
+          MNEMONIC: ${{ secrets.MNEMONIC }}
+          ALCHEMY_API_KEY: ${{ secrets.ALCHEMY_API_KEY }}
+        run: npm test
+      - env:
+          MNEMONIC: ${{ secrets.MNEMONIC }}
+          ALCHEMY_API_KEY: ${{ secrets.ALCHEMY_API_KEY }}
+        run: npm run lint
