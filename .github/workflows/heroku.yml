@@ -37,7 +37,7 @@ jobs:
           echo "IMAGE_TAG=$(echo $IMAGE_NAME:$VERSION)" >> $GITHUB_ENV
 
       - name: Build image
-        run: docker build -t ${{ env.IMAGE_TAG }} .
+        run: docker build -t ${{ env.IMAGE_TAG }} .  --build-arg database_url=${{ secrets.DATABASE_URL }} --build-arg database_name=${{ secrets.DATABASE_NAME }} --build-arg mnemonic=${{ secrets.MNEMONIC }} --build-arg alchemy_api_key=${{ secrets.ALCHEMY_API_KEY }}
 
       - name: Log in to Heroku Container Registry
         env:
