@@ -24,14 +24,12 @@ jobs:
       ALCHEMY_API_KEY: ${{ secrets.ALCHEMY_API_KEY }}
     steps:
       - uses: actions/checkout@master
-
       - name: Log in to the Container registry
         uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
         with:
           registry: ${{ env.CI_IMAGE_REGISTRY }}
           username: ${{ env.GITHUB_USERNAME }}
           password: ${{ env.GITHUB_TOKEN }}
-
       - name: Get image tag
         env:
           IMAGE_NAME: ${{ env.CI_IMAGE_REGISTRY }}/${{ env.CI_IMAGE_NAME }}
@@ -39,31 +37,26 @@ jobs:
           VERSION=$(cat Version.txt)
           IMAGE_NAME=$(echo "$IMAGE_NAME" | tr '[:upper:]' '[:lower:]')
           echo "IMAGE_TAG=$(echo $IMAGE_NAME:$VERSION)" >> $GITHUB_ENV
-
       - name: Build image
         run: docker build -t ${{ env.IMAGE_TAG }} .
           --build-arg database_url=${{ env.DATABASE_URL }}
           --build-arg database_name=${{ env.DATABASE_NAME }}
           --build-arg mnemonic=${{ env.MNEMONIC }}
           --build-arg alchemy_api_key=${{ env.ALCHEMY_API_KEY }}
-
       - name: Log in to Heroku Container Registry
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: heroku container:login
-
       - name: Tag container of Heroku Container Registry
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: docker tag ${{ env.IMAGE_TAG }} registry.heroku.com/${{ env.HEROKU_APP}}/web
-
       - name: Push container to Heroku Container Registry
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: heroku container:push web
           --arg database_url=${{ env.DATABASE_URL }},database_name=${{ env.DATABASE_NAME }},mnemonic=${{ env.MNEMONIC }},alchemy_api_key=${{ env.ALCHEMY_API_KEY }}
           --app ${{ env.HEROKU_APP}}
-
       - name: Release container to Heroku Container Registry
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
