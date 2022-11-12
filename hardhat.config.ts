@@ -77,6 +77,7 @@ const config: HardhatUserConfig = {
         mnemonic,
       },
       chainId: chainIds.hardhat,
+      allowUnlimitedContractSize: true,
     },
     goerli: createTestnetConfig("goerli"),
   },
@@ -92,7 +93,8 @@ const config: HardhatUserConfig = {
       // https://hardhat.org/hardhat-network/#solidity-optimizer-support
       optimizer: {
         enabled: true,
-        runs: 200,
+        runs: 500,
+        details: { yul: false },
       },
     },
   },
