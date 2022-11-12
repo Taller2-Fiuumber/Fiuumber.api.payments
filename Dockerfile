@@ -16,9 +16,7 @@ RUN mkdir /app
 WORKDIR /app
 COPY . /app
 
-RUN npm install
-
 RUN adduser -D myuser
 USER myuser
 
-CMD npm start
+CMD npm install && npm start
