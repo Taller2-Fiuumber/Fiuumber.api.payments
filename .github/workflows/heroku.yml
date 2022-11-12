@@ -40,10 +40,10 @@ jobs:
       - name: Build image
         run: |
           docker build -t ${{ env.IMAGE_TAG }} .
-            --build-arg database_url=${{ env.DATABASE_URL }}
-            --build-arg database_name=${{ env.DATABASE_NAME }}
-            --build-arg mnemonic=${{ env.MNEMONIC }}
-            --build-arg alchemy_api_key=${{ env.ALCHEMY_API_KEY }}
+            --build-arg database_url=${{ secret.DATABASE_URL }}
+            --build-arg database_name=${{ secret.DATABASE_NAME }}
+            --build-arg mnemonic=${{ secret.MNEMONIC }}
+            --build-arg alchemy_api_key=${{ secret.ALCHEMY_API_KEY }}
       - name: Log in to Heroku Container Registry
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
