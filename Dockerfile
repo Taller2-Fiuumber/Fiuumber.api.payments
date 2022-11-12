@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM node:16 as builder
+FROM node:16-alpine as builder
 
 ARG database_url
 ARG database_name
@@ -16,7 +16,6 @@ RUN mkdir /app
 WORKDIR /app
 COPY . /app
 
-RUN adduser -D myuser
-USER myuser
+RUN npm install
 
-CMD npm install && npm start
+CMD npm start
