@@ -41,7 +41,6 @@ const makeTestsPaymentToContract = (paymentFunction: PaymentFunction, functionNa
 
             amountToBeSentPreviously = await basicPayments.sentPayments(sender.address);
             paymentTx = await paymentFunction(basicPayments.connect(sender), amountToBeSent);
-
           });
           it(`THEN the sender decreases its balance in ${amountToBeSentInEthers} ethers`, async function () {
             return expect(paymentTx).to.changeEtherBalance(sender, amountToBeSent.mul(-1));
