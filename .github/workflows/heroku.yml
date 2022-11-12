@@ -18,6 +18,10 @@ jobs:
       GITHUB_TOKEN: ${{ github.token }}
       GITHUB_USERNAME: ${{ github.actor }}
       HEROKU_APP: fiuumber-api-payments
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+      MNEMONIC: ${{ secrets.MNEMONIC }}
+      ALCHEMY_API_KEY: ${{ secrets.ALCHEMY_API_KEY }}
     steps:
       - uses: actions/checkout@master
 
@@ -38,10 +42,10 @@ jobs:
 
       - name: Build image
         run: docker build -t ${{ env.IMAGE_TAG }} .
-          --build-arg database_url=${{ secrets.DATABASE_URL }}
-          --build-arg database_name=${{ secrets.DATABASE_NAME }}
-          --build-arg mnemonic=${{ secrets.MNEMONIC }}
-          --build-arg alchemy_api_key=${{ secrets.ALCHEMY_API_KEY }}
+          --build-arg database_url=${{ env.DATABASE_URL }}
+          --build-arg database_name=${{ env.DATABASE_NAME }}
+          --build-arg mnemonic=${{ env.MNEMONIC }}
+          --build-arg alchemy_api_key=${{ env.ALCHEMY_API_KEY }}
 
       - name: Log in to Heroku Container Registry
         env:
@@ -57,7 +61,7 @@ jobs:
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: heroku container:push web
-          --arg database_url=${{ secrets.DATABASE_URL }},database_name=${{ secrets.DATABASE_NAME }},mnemonic=${{ secrets.MNEMONIC }},alchemy_api_key=${{ secrets.ALCHEMY_API_KEY }}
+          --arg database_url=${{ env.DATABASE_URL }},database_name=${{ env.DATABASE_NAME }},mnemonic=${{ env.MNEMONIC }},alchemy_api_key=${{ env.ALCHEMY_API_KEY }}
           --app ${{ env.HEROKU_APP}}
 
       - name: Release container to Heroku Container Registry
