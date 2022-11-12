@@ -9,7 +9,7 @@ export async function fixtureDeployedBasicPayments(): Promise<BasicPayments> {
   await deployments.fixture();
   const { deployer } = await getNamedAccounts();
 
-  // @ts-ignore
+  // IGNORE THIS ERROR
   const basicPayments = <unknown>await ethers.getContract("BasicPayments", deployer);
   return basicPayments as BasicPayments;
 }
