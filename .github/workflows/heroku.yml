@@ -51,15 +51,16 @@ jobs:
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: docker tag ${{ env.IMAGE_TAG }} registry.heroku.com/${{ env.HEROKU_APP}}/web
-      - name: Push container to Heroku Container Registry
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-          MNEMONIC: ${{ secrets.MNEMONIC }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
-          ALCHEMY_API_KEY: ${{ secrets.ALCHEMY_API_KEY }}
-        run: heroku container:push web --app ${{ env.HEROKU_APP}} --arg mnemonic=${{ env.MNEMONIC }},database_url=${{ env.DATABASE_URL }},database_name=${{ env.DATABASE_NAME }},alchemy_api_key=${{ env.ALCHEMY_API_KEY }}
-
+      - name: Push to heroku
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: registry.heroku.com/${{ env.HEROKU_APP}}/web
+          build-args: |
+            database_url=${{ secrets.DATABASE_URL }}
+            database_name=${{ secrets.DATABASE_NAME }}
+            mnemonic=${{ secrets.MNEMONIC }}
+            alchemy_api_key=${{ secrets.ALCHEMY_API_KEY }}
       - name: Release container to Heroku Container Registry
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
