@@ -33,7 +33,7 @@ jobs:
           VERSION=$(cat Version.txt)
           IMAGE_NAME=$(echo "$IMAGE_NAME" | tr '[:upper:]' '[:lower:]')
           echo "IMAGE_TAG=$(echo $IMAGE_NAME:$VERSION)" >> $GITHUB_ENV
-      - name: Build and Push to DigitalOcean Container Registry
+      - name: Build and Push Container Registry
         uses: docker/build-push-action@v2
         with:
           push: true
