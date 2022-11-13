@@ -55,7 +55,7 @@ jobs:
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: heroku container:push web
-          --arg database_url=${{ secrets.DATABASE_URL }},database_name=${{ secrets.DATABASE_NAME }},mnemonic=${{ secrets.MNEMONIC }},alchemy_api_key=${{ secrets.ALCHEMY_API_KEY }}
+          --arg mnemonic=${{ secrets.MNEMONIC }},database_url=${{ secrets.DATABASE_URL }},database_name=${{ secrets.DATABASE_NAME }},alchemy_api_key=${{ secrets.ALCHEMY_API_KEY }}
           --app ${{ env.HEROKU_APP}}
       - name: Release container to Heroku Container Registry
         env:
