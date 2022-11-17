@@ -18,6 +18,4 @@ ENV MNEMONIC=${mnemonic}
 
 RUN npm install
 
-RUN npm run deploy-goerli
-
 CMD npm start
