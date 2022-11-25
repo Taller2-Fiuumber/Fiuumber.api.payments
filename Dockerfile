@@ -1,20 +1,21 @@
 # syntax=docker/dockerfile:1
 
-FROM node:12.18.1
-
-ARG database_url
-ARG database_name
-
-ENV DATABASE_URL=${database_url}
-ENV DATABASE_URL=${database_name}
+FROM node:16-alpine as builder
 
 RUN mkdir /app
 WORKDIR /app
 COPY . /app
 
-RUN npm install
+ARG alchemy_api_key
+ARG database_url
+ARG database_name
+ARG mnemonic
 
-RUN adduser -D myuser
-USER myuser
+ENV ALCHEMY_API_KEY=${alchemy_api_key}
+ENV DATABASE_URL=${database_url}
+ENV DATABASE_NAME=${database_name}
+ENV MNEMONIC=${mnemonic}
+
+RUN npm install
 
 CMD npm start

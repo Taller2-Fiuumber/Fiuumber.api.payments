@@ -38,6 +38,7 @@ const makeTestsPaymentToContract = (paymentFunction: PaymentFunction, functionNa
           before(async function () {
             const { sender: senderAddress } = await getNamedAccounts();
             sender = await ethers.getSigner(senderAddress);
+
             amountToBeSentPreviously = await basicPayments.sentPayments(sender.address);
             paymentTx = await paymentFunction(basicPayments.connect(sender), amountToBeSent);
           });

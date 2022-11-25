@@ -8,7 +8,9 @@ const { loadFixture } = waffle;
 export async function fixtureDeployedBasicPayments(): Promise<BasicPayments> {
   await deployments.fixture();
   const { deployer } = await getNamedAccounts();
-  const basicPayments = <unknown>await ethers.getContractAt("BasicPayments", deployer);
+
+  // IGNORE THIS ERROR
+  const basicPayments = <unknown>await ethers.getContract("BasicPayments", deployer);
   return basicPayments as BasicPayments;
 }
 
