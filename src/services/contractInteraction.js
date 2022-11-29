@@ -9,30 +9,21 @@ const deposits = {};
 
 const deposit =
   ({ config }) =>
-  async (senderId, amountInEthers) => {
-    const basicPayments = await getContract(config, senderId);
+  async (senderWallet, amountToSend) => {
+
+    const basicPayments = await getContract(config, senderWallet);
     const tx = await basicPayments.deposit({
-      value: await ethers.utils.parseEther(amountInEthers).toHexString(),
+      value: await ethers.utils.parseEther(amountToSend).toHexString(),
     });
     tx.wait(1).then(
       receipt => {
-        console.log("Transaction mined");
         const firstEvent = receipt && receipt.events && receipt.events[0];
         console.log(firstEvent);
         if (firstEvent && firstEvent.event == "DepositMade") {
-          return MongoClient.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
-            .then(client => {
-              const doc = {
-                hash: tx.hash,
-                senderAddress: firstEvent.args.sender,
-                amount: firstEvent.args.amount,
-              };
-              client.db(process.env.DB_NAME).collection("deposit").insertOne(doc);
-              return doc;
-            })
-            .catch(err => {
-              return err;
-            });
+          deposits[tx.hash] = {
+            senderAddress: firstEvent.args.sender,
+            amountSent: firstEvent.args.amount,
+          };
         } else {
           console.error(`Payment not created in tx ${tx.hash}`);
         }
@@ -53,13 +44,7 @@ const deposit =
 const getDepositReceipt =
   ({}) =>
   async depositTxHash => {
-    return MongoClient.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
-      .then(client => {
-        return client.db(process.env.DB_NAME).collection("deposit").find({ hash: depositTxHash }).toArray();
-      })
-      .catch(err => {
-        return err;
-      });
+    return deposits[depositTxHash];
   };
 
 module.exports = dependencies => ({

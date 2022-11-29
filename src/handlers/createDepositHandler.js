@@ -1,5 +1,6 @@
 function schema() {
   return {
+    // senderId: envia? transacccion?
     params: {
       type: "object",
       properties: {
@@ -17,7 +18,9 @@ function schema() {
 
 function handler({ contractInteraction, walletService }) {
   return async function (req) {
-    return contractInteraction.deposit(walletService.getWallet(req.body.senderId), req.body.amountInEthers);
+    walletService.getWallet(req.body.senderId).then((the_wallet) => {
+      return contractInteraction.deposit(the_wallet, req.body.amountInEthers);
+    });
   };
 }
 

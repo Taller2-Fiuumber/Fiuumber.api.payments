@@ -60,14 +60,12 @@ const getWalletData =
       });
   };
 
-const getWallet =
-  ({ config }) =>
-  userId => {
+const getWallet = ({ config }) => userId => {
     return MongoClient.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
-      .then(client => {
+      .then(async client => {
         const provider = new ethers.providers.AlchemyProvider(config.network, process.env.ALCHEMY_API_KEY);
-        const wallet = client.db(process.env.DB_NAME).collection("wallet").findOne({ userId: userId });
-        return new ethers.Wallet(wallet.privateKey, provider);
+        let a_wallet = await client.db(process.env.DB_NAME).collection("wallet").find({ "userId": userId }).toArray();
+        return new ethers.Wallet(a_wallet[0].privateKey, provider);
       })
       .catch(err => {
         return err;
