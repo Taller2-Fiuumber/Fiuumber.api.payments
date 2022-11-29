@@ -44,7 +44,13 @@ const deposit =
 const getDepositReceipt =
   ({}) =>
   async depositTxHash => {
-    return deposits[depositTxHash];
+    return MongoClient.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
+      .then(client => {
+        return client.db(process.env.DB_NAME).collection("deposit").find({ hash: depositTxHash }).toArray();
+      })
+      .catch(err => {
+        return err;
+      });
   };
 
 module.exports = dependencies => ({

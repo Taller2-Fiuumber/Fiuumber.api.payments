@@ -1,6 +1,5 @@
 function schema() {
   return {
-    // senderId: envia? transacccion?
     params: {
       type: "object",
       properties: {
