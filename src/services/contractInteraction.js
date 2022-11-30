@@ -1,32 +1,31 @@
 const ethers = require("ethers");
-const getDepositHandler = require("../handlers/getDepositHandler");
+const { MongoClient } = require("mongodb");
 
 const getContract = (config, wallet) => {
   return new ethers.Contract(config.contractAddress, config.contractAbi, wallet);
 };
 
-const deposits = {};
-
 const deposit =
   ({ config }) =>
-  async (senderId, amountInEthers) => {
-    const basicPayments = await getContract(config, senderId);
+  async (senderWallet, amountToSend) => {
+
+    const basicPayments = await getContract(config, senderWallet);
     const tx = await basicPayments.deposit({
-      value: await ethers.utils.parseEther(amountInEthers).toHexString(),
+      value: await ethers.utils.parseEther(amountToSend).toHexString(),
     });
+
     tx.wait(1).then(
       receipt => {
-        console.log("Transaction mined");
         const firstEvent = receipt && receipt.events && receipt.events[0];
         console.log(firstEvent);
         if (firstEvent && firstEvent.event == "DepositMade") {
-          return MongoClient.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
+          let doc = {
+            txHash: tx.hash,
+            senderAddress: firstEvent.args.sender,
+            amountSent: firstEvent.args.amount,
+          };
+          MongoClient.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
             .then(client => {
-              const doc = {
-                hash: tx.hash,
-                senderAddress: firstEvent.args.sender,
-                amount: firstEvent.args.amount,
-              };
               client.db(process.env.DB_NAME).collection("deposit").insertOne(doc);
               return doc;
             })
@@ -47,22 +46,33 @@ const deposit =
         console.error(message);
       },
     );
+
     return tx;
   };
 
-const getDepositReceipt =
-  ({}) =>
-  async depositTxHash => {
+const getDepositReceipt = ({ config }) => async depositTxHash => {
     return MongoClient.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
-      .then(client => {
-        return client.db(process.env.DB_NAME).collection("deposit").find({ hash: depositTxHash }).toArray();
+      .then( client => {
+        return client.db(process.env.DB_NAME).collection("deposit").findOne({ txHash: depositTxHash });
       })
       .catch(err => {
         return err;
       });
   };
 
+
+const getAllDepositReceipt = ({ config }) => async () => {
+  return MongoClient.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
+    .then( client => {
+      return client.db(process.env.DB_NAME).collection("deposit").find().toArray();
+    })
+    .catch(err => {
+      return err;
+    });
+};
+
 module.exports = dependencies => ({
   deposit: deposit(dependencies),
   getDepositReceipt: getDepositReceipt(dependencies),
+  getAllDepositReceipt: getAllDepositReceipt(dependencies),
 });

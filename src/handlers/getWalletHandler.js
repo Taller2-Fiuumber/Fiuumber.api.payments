@@ -3,7 +3,7 @@ function schema() {
     params: {
       type: "object",
       properties: {
-        id: {
+        userId: {
           type: "integer",
         },
       },
