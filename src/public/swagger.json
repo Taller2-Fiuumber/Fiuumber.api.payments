@@ -115,6 +115,36 @@
       }
     },
 
+    "/deposit/transfer": {
+      "post": {
+        "tags": ["Deposit"],
+        "summary": "Get wallet with given ID",
+        "requestBody": {
+          "description": "Administrator Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/DepositTransfer"
+              }
+            }
+          }
+        },
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Deposit"
+            }
+          },
+          "404": {
+            "description": "Failed. Deposit not found."
+          }
+        }
+      }
+    },
+
     "/deposit": {
       "post": {
         "tags": ["Deposit"],
@@ -152,7 +182,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/Deposit"
+              "$ref": "#/definitions/DepositUpdate"
             }
           },
           "404": {
@@ -225,6 +255,19 @@
     "Deposit": {
       "type": "object",
       "properties": {
+        "amountInEthers": {
+          "type": "string",
+          "example": "0.00001"
+        },
+        "senderId": {
+          "type": "number",
+          "example": 2
+        }
+      }
+    },
+    "DepositUpdate": {
+      "type": "object",
+      "properties": {
         "_id": {
           "type": "number",
           "example": 1
@@ -234,8 +277,17 @@
           "example": "0.00001"
         },
         "senderId": {
-          "type": "numebr",
+          "type": "number",
           "example": 2
+        }
+      }
+    },
+    "DepositTransfer": {
+      "type": "object",
+      "properties": {
+        "amountInEthers": {
+          "type": "string",
+          "example": "0.00001"
         }
       }
     }

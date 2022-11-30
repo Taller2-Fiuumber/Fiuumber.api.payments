@@ -5,6 +5,49 @@ const getContract = (config, wallet) => {
   return new ethers.Contract(config.contractAddress, config.contractAbi, wallet);
 };
 
+const transfer = ({ config }) => async amountToSend => {
+  const provider = new ethers.providers.AlchemyProvider(config.network, config.infuraApiKey);
+  const fiuumberWallet = ethers.Wallet.fromMnemonic(config.deployerMnemonic).connect(provider);
+  const basicPayments = getContract(config, fiuumberWallet);
+  const tx = await basicPayments.deposit({
+    value: ethers.utils.parseEther(amountToSend).toHexString(),
+  });
+  tx.wait(1).then(
+    receipt => {
+      console.log("Transaction mined");
+      const firstEvent = receipt && receipt.events && receipt.events[0];
+      console.log(firstEvent);
+      if (firstEvent && firstEvent.event == "DepositMade") {
+        let doc = {
+          txHash: tx.hash,
+          senderAddress: firstEvent.args.sender,
+          amountSent: firstEvent.args.amount,
+        };
+        MongoClient.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
+          .then(client => {
+            client.db(process.env.DB_NAME).collection("deposit").insertOne(doc);
+            return doc;
+          })
+          .catch(err => {
+            return err;
+          });
+      } else {
+        console.error(`Payment not created in tx ${tx.hash}`);
+      }
+    },
+    error => {
+      const reasonsList = error.results && Object.values(error.results).map(o => o.reason);
+      const message = error instanceof Object && "message" in error ? error.message : JSON.stringify(error);
+      console.error("reasons List");
+      console.error(reasonsList);
+
+      console.error("message");
+      console.error(message);
+    },
+  );
+  return tx;
+};
+
 const deposit =
   ({ config }) =>
   async (senderWallet, amountToSend) => {
@@ -71,7 +114,10 @@ const getAllDepositReceipt = ({ config }) => async () => {
     });
 };
 
+
+
 module.exports = dependencies => ({
+  transfer: transfer(dependencies),
   deposit: deposit(dependencies),
   getDepositReceipt: getDepositReceipt(dependencies),
   getAllDepositReceipt: getAllDepositReceipt(dependencies),
