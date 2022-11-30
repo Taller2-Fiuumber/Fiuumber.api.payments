@@ -144,6 +144,23 @@
         }
       }
     },
+    "/deposits": {
+      "get": {
+        "tags": ["Deposit"],
+        "summary": "Get deposits",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Deposit"
+            }
+          },
+          "404": {
+            "description": "Failed. Deposit not found."
+          }
+        }
+      }
+    },
 
     "/deposit/{depositTxHash}": {
       "parameters": [
@@ -214,7 +231,7 @@
         },
         "amountInEthers": {
           "type": "string",
-          "example": "0.0001"
+          "example": "0.00001"
         },
         "senderId": {
           "type": "numebr",

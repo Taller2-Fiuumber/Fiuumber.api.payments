@@ -1,11 +1,9 @@
 const ethers = require("ethers");
-const getDepositHandler = require("../handlers/getDepositHandler");
+const { MongoClient } = require("mongodb");
 
 const getContract = (config, wallet) => {
   return new ethers.Contract(config.contractAddress, config.contractAbi, wallet);
 };
-
-const deposits = {};
 
 const deposit =
   ({ config }) =>
@@ -15,15 +13,25 @@ const deposit =
     const tx = await basicPayments.deposit({
       value: await ethers.utils.parseEther(amountToSend).toHexString(),
     });
+
     tx.wait(1).then(
       receipt => {
         const firstEvent = receipt && receipt.events && receipt.events[0];
         console.log(firstEvent);
         if (firstEvent && firstEvent.event == "DepositMade") {
-          deposits[tx.hash] = {
+          let doc = {
+            txHash: tx.hash,
             senderAddress: firstEvent.args.sender,
             amountSent: firstEvent.args.amount,
           };
+          MongoClient.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
+            .then(client => {
+              client.db(process.env.DB_NAME).collection("deposit").insertOne(doc);
+              return doc;
+            })
+            .catch(err => {
+              return err;
+            });
         } else {
           console.error(`Payment not created in tx ${tx.hash}`);
         }
@@ -38,22 +46,33 @@ const deposit =
         console.error(message);
       },
     );
+
     return tx;
   };
 
-const getDepositReceipt =
-  ({}) =>
-  async depositTxHash => {
+const getDepositReceipt = ({ config }) => async depositTxHash => {
     return MongoClient.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
-      .then(client => {
-        return client.db(process.env.DB_NAME).collection("deposit").find({ hash: depositTxHash }).toArray();
+      .then( client => {
+        return client.db(process.env.DB_NAME).collection("deposit").findOne({ txHash: depositTxHash });
       })
       .catch(err => {
         return err;
       });
   };
 
+
+const getAllDepositReceipt = ({ config }) => async () => {
+  return MongoClient.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
+    .then( client => {
+      return client.db(process.env.DB_NAME).collection("deposit").find().toArray();
+    })
+    .catch(err => {
+      return err;
+    });
+};
+
 module.exports = dependencies => ({
   deposit: deposit(dependencies),
   getDepositReceipt: getDepositReceipt(dependencies),
+  getAllDepositReceipt: getAllDepositReceipt(dependencies),
 });
