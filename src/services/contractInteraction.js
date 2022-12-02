@@ -5,7 +5,7 @@ const getContract = (config, wallet) => {
   return new ethers.Contract(config.contractAddress, config.contractAbi, wallet);
 };
 
-const transfer = ({ config }) => async amountToSend => {
+const withdrawOwner = ({ config }) => async amountToSend => {
   const provider = new ethers.providers.AlchemyProvider(config.network, config.infuraApiKey);
   const fiuumberWallet = ethers.Wallet.fromMnemonic(config.deployerMnemonic).connect(provider);
   const basicPayments = getContract(config, fiuumberWallet);
@@ -16,7 +16,6 @@ const transfer = ({ config }) => async amountToSend => {
     receipt => {
       console.log("Transaction mined");
       const firstEvent = receipt && receipt.events && receipt.events[0];
-      console.log(firstEvent);
       if (firstEvent && firstEvent.event == "DepositMade") {
         let doc = {
           txHash: tx.hash,
@@ -49,22 +48,26 @@ const transfer = ({ config }) => async amountToSend => {
   return tx;
 };
 
+const retrieveFromWallet =
+  ({ config }) =>
+  async (retrieverWallet, amountToSend) => {
+    const txRetriever = await depositFromSender({config})(retrieverWallet, amountToSend)
+    const txWithdraw = await withdrawOwner({config})(amountToSend)
+    return [txRetriever, txWithdraw]
+  };
+
+
 const depositFromSenderToReceiver =
   ({ config }) =>
   async (senderWallet, receiverWallet, amountToSend) => {
-    console.log("================depositFromSenderToReceiver config", config)
-
-    const a = await depositFromSender({config})(senderWallet, amountToSend)
-    const b = await depositToReceiver({config})(receiverWallet, amountToSend)
-    return [a, b]
+    const txSender = await depositFromSender({config})(senderWallet, amountToSend)
+    const txReceiver = await depositToReceiver({config})(receiverWallet, amountToSend)
+    return [txSender, txReceiver]
   };
 
 const depositFromSender =
   ({ config }) =>
   async (senderWallet, amountToSend) => {
-    console.log("_______________config", config);
-    console.log("_______________senderWallet", senderWallet);
-    console.log("_______________amountToSend", amountToSend);
 
     const basicPayments = await getContract(config, senderWallet);
     const tx = await basicPayments.deposit({
@@ -112,8 +115,6 @@ const depositFromSender =
   const depositToReceiver =
     ({ config }) =>
     async (receiverWallet, amountToSend) => {
-    console.log("_______________receiverWallet", receiverWallet);
-
 
     const provider = new ethers.providers.AlchemyProvider(config.network, config.infuraApiKey);
     const fiuumberWallet = ethers.Wallet.fromMnemonic(config.deployerMnemonic).connect(provider);
@@ -180,10 +181,11 @@ const getAllDepositReceipt = ({ config }) => async () => {
 };
 
 module.exports = dependencies => ({
-  transfer: transfer(dependencies),
+  withdrawOwner: withdrawOwner(dependencies),
   depositFromSender: depositFromSender(dependencies),
   depositToReceiver: depositToReceiver(dependencies),
   depositFromSenderToReceiver: depositFromSenderToReceiver(dependencies),
   getDepositReceipt: getDepositReceipt(dependencies),
   getAllDepositReceipt: getAllDepositReceipt(dependencies),
+  retrieveFromWallet: retrieveFromWallet(dependencies),
 });
