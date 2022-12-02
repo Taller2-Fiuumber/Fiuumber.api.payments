@@ -20,8 +20,9 @@ const transfer = ({ config }) => async amountToSend => {
       if (firstEvent && firstEvent.event == "DepositMade") {
         let doc = {
           txHash: tx.hash,
-          senderAddress: firstEvent.args.sender,
-          amountSent: firstEvent.args.amount,
+          address: firstEvent.args.sender,
+          amountSent: amountToSend,
+          type: "withdraw owner",
         };
         MongoClient.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
           .then(client => {
@@ -64,8 +65,9 @@ const depositFromSender =
         if (firstEvent && firstEvent.event == "DepositMade") {
           let doc = {
             txHash: tx.hash,
-            senderAddress: firstEvent.args.sender,
-            amountSent: firstEvent.args.amount,
+            address: firstEvent.args.sender,
+            amountSent: amountToSend,
+            type: "from sender to owner",
           };
           MongoClient.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
             .then(client => {
@@ -97,6 +99,8 @@ const depositFromSender =
   const depositToReceiver =
     ({ config }) =>
     async (receiverWallet, amountToSend) => {
+    console.log("___________receiverWallet", receiverWallet);
+
     const provider = new ethers.providers.AlchemyProvider(config.network, config.infuraApiKey);
     const fiuumberWallet = ethers.Wallet.fromMnemonic(config.deployerMnemonic).connect(provider);
     const basicPayments = getContract(config, fiuumberWallet);
@@ -109,12 +113,12 @@ const depositFromSender =
       receipt => {
         console.log("Transaction mined");
         const firstEvent = receipt && receipt.events && receipt.events[0];
-        console.log(firstEvent);
-        if (firstEvent && firstEvent.event == "DepositMade") {
+        if (firstEvent && firstEvent.event == "PaymentMade") {
           let doc = {
             txHash: tx.hash,
-            senderAddress: firstEvent.args.sender,
-            amountSent: firstEvent.args.amount,
+            address: firstEvent.args.receiver,
+            amountSent: amountToSend,
+            type: "from receiver to owner",
           };
           MongoClient.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
             .then(client => {
