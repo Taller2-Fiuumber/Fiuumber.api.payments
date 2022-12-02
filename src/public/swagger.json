@@ -118,7 +118,7 @@
     "/deposit/withdrawOwner": {
       "post": {
         "tags": ["Deposit"],
-        "summary": "Get wallet with given ID",
+        "summary": "Withdraw an amount of money from owner",
         "requestBody": {
           "description": "Administrator Object",
           "required": true,
@@ -176,7 +176,7 @@
     "/depositFromSender": {
       "post": {
         "tags": ["Deposit"],
-        "summary": "Get wallet with given ID",
+        "summary": "Send money to owner from an specific wallet ID",
         "requestBody": {
           "description": "Administrator Object",
           "required": true,
@@ -205,7 +205,7 @@
     "/depositFromSenderToReceiver": {
       "post": {
         "tags": ["Deposit"],
-        "summary": "Get wallet with given ID",
+        "summary": "Send money from a sender wallet to a receiver wallet passing though the owner",
         "requestBody": {
           "description": "Administrator Object",
           "required": true,
@@ -234,7 +234,7 @@
     "/depositToReceiver": {
       "post": {
         "tags": ["Deposit"],
-        "summary": "Get wallet with given ID",
+        "summary": "Deposit money from owner to a specific receiver",
         "requestBody": {
           "description": "Administrator Object",
           "required": true,
@@ -293,7 +293,7 @@
       ],
       "get": {
         "tags": ["Deposit"],
-        "summary": "Get wallet with given ID",
+        "summary": "Get a deposit by its hash",
         "responses": {
           "200": {
             "description": "OK",
