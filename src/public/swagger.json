@@ -121,6 +121,18 @@
           }
         }
       },
+      "delete": {
+        "tags": ["Wallet"],
+        "summary": "Delete all wallets in system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Wallet"
+            }
+          }
+        }
+      },
       "post": {
         "tags": ["Wallet"],
         "summary": "Create a new wallet in system",
@@ -297,6 +309,18 @@
           },
           "404": {
             "description": "Failed. Deposit not found."
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Wallet"],
+        "summary": "Delete all wallets in system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Wallet"
+            }
           }
         }
       }

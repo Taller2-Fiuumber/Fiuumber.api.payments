@@ -180,6 +180,17 @@ const getAllDepositReceipt = ({ config }) => async () => {
     });
 };
 
+const deleteAllDepositReceipt = ({ config }) => async () => {
+  return MongoClient.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
+    .then( client => {
+      return client.db(process.env.DB_NAME).collection("deposit").deleteMany({})
+    })
+    .catch(err => {
+      return err;
+    });
+};
+
+
 module.exports = dependencies => ({
   withdrawOwner: withdrawOwner(dependencies),
   depositFromSender: depositFromSender(dependencies),
@@ -188,4 +199,5 @@ module.exports = dependencies => ({
   getDepositReceipt: getDepositReceipt(dependencies),
   getAllDepositReceipt: getAllDepositReceipt(dependencies),
   retrieveFromWallet: retrieveFromWallet(dependencies),
+  deleteAllDepositReceipt: deleteAllDepositReceipt(dependencies),
 });

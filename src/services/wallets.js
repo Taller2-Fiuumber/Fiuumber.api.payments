@@ -89,6 +89,16 @@ const getWallet = ({ config }) =>
       });
   };
 
+const deleteAllWallets = ({ config }) => async () => {
+  return MongoClient.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
+    .then( client => {
+      return client.db(process.env.DB_NAME).collection("wallet").deleteMany({});
+    })
+    .catch(err => {
+      return err;
+    });
+};
+
 module.exports = ({ config }) => ({
   createWallet: createWallet({ config }),
   getDeployerWallet: getDeployerWallet({ config }),
@@ -96,4 +106,5 @@ module.exports = ({ config }) => ({
   getWalletData: getWalletData({ config }),
   getWallet: getWallet({ config }),
   getBalance: getBalance({ config }),
+  deleteAllWallets: deleteAllWallets({ config }),
 });
