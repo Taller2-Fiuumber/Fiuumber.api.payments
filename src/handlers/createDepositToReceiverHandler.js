@@ -3,7 +3,7 @@ function schema() {
     params: {
       type: "object",
       properties: {
-        senderId: {
+        receiverId: {
           type: "integer",
         },
         amountInEthers: {
@@ -11,14 +11,14 @@ function schema() {
         },
       },
     },
-    required: ["senderId", "amountInEthers"],
+    required: ["receiverId", "amountInEthers"],
   };
 }
 
 function handler({ contractInteraction, walletService }) {
   return async function (req, reply) {
-    return walletService.getWallet(req.body.senderId).then(async (the_wallet) => {
-      return reply.code(200).send(await contractInteraction.deposit(the_wallet, req.body.amountInEthers));
+    return walletService.getWallet(req.body.receiverId).then(async (the_wallet) => {
+      return reply.code(200).send(await contractInteraction.depositToReceiver(the_wallet, req.body.amountInEthers));
     });
   };
 }

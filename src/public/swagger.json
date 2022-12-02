@@ -145,7 +145,7 @@
       }
     },
 
-    "/deposit": {
+    "/depositFromSender": {
       "post": {
         "tags": ["Deposit"],
         "summary": "Get wallet with given ID",
@@ -155,7 +155,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/definitions/Deposit"
+                "$ref": "#/definitions/DepositFromSender"
               }
             }
           }
@@ -165,7 +165,65 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/Deposit"
+              "$ref": "#/definitions/DepositFromSender"
+            }
+          },
+          "404": {
+            "description": "Failed. Deposit not found."
+          }
+        }
+      }
+    },
+    "/depositFromSenderToReceiver": {
+      "post": {
+        "tags": ["Deposit"],
+        "summary": "Get wallet with given ID",
+        "requestBody": {
+          "description": "Administrator Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/DepositFromSenderToReceiver"
+              }
+            }
+          }
+        },
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/DepositFromSenderToReceiver"
+            }
+          },
+          "404": {
+            "description": "Failed. Deposit not found."
+          }
+        }
+      }
+    },
+    "/depositToReceiver": {
+      "post": {
+        "tags": ["Deposit"],
+        "summary": "Get wallet with given ID",
+        "requestBody": {
+          "description": "Administrator Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/DepositToReceiver"
+              }
+            }
+          }
+        },
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/DepositToReceiver"
             }
           },
           "404": {
@@ -265,6 +323,49 @@
         }
       }
     },
+    "DepositFromSender": {
+      "type": "object",
+      "properties": {
+        "amountInEthers": {
+          "type": "string",
+          "example": "0.00001"
+        },
+        "senderId": {
+          "type": "number",
+          "example": 2
+        }
+      }
+    },
+    "DepositToReceiver": {
+      "type": "object",
+      "properties": {
+        "amountInEthers": {
+          "type": "string",
+          "example": "0.00001"
+        },
+        "receiverId": {
+          "type": "number",
+          "example": 2
+        }
+      }
+    },
+    "DepositFromSenderToReceiver": {
+      "type": "object",
+      "properties": {
+        "amountInEthers": {
+          "type": "string",
+          "example": "0.00001"
+        },
+        "senderId": {
+          "type": "number",
+          "example": 2
+        },
+        "receiverId": {
+          "type": "number",
+          "example": 2
+        }
+      }
+    },
     "DepositUpdate": {
       "type": "object",
       "properties": {
@@ -276,6 +377,7 @@
           "type": "string",
           "example": "0.00001"
         },
+
         "senderId": {
           "type": "number",
           "example": 2
