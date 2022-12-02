@@ -13,6 +13,9 @@ const getWalletBalance = require("./handlers/getWalletBalanceHandler");
 const getDeposit = require("./handlers/getDepositHandler");
 const getAllDeposit = require("./handlers/getAllDepositHandler");
 
+const deleteAllDeposits = require("./handlers/deleteAllDepositsHandler");
+const deleteAllWallets = require("./handlers/deleteAllWalletsHandler");
+
 const getHome = require("./handlers/getHomeHandler");
 
 function getWalletDataRoute({ services, config }) {
@@ -123,6 +126,24 @@ function getHomeRoute({ services, config }) {
   };
 }
 
+function deleteAllDepositsRoute({ services, config }) {
+  return {
+    method: "DELETE",
+    url: "/api/wallets-service/deposits",
+    schema: deleteAllDeposits.schema(config),
+    handler: deleteAllDeposits.handler({ config, ...services }),
+  };
+}
+
+function deleteAllWalletsRoute({ services, config }) {
+  return {
+    method: "DELETE",
+    url: "/api/wallets-service/wallet",
+    schema: deleteAllWallets.schema(config),
+    handler: deleteAllWallets.handler({ config, ...services }),
+  };
+}
+
 module.exports = [
   getWalletDataRoute,
   getWalletsDataRoute,
@@ -136,4 +157,6 @@ module.exports = [
   getDepositRoute,
   getAllDepositRoute,
   getHomeRoute,
+  deleteAllDepositsRoute,
+  deleteAllWalletsRoute,
 ];
