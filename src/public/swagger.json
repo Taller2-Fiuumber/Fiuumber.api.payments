@@ -28,16 +28,16 @@
   "consumes": ["application/json"],
   "produces": ["application/json"],
   "paths": {
-    "/wallet/{id}": {
+    "/wallet/{address}": {
       "parameters": [
         {
           "in": "path",
-          "name": "id",
+          "name": "address",
           "required": true,
-          "description": "Wallet id",
+          "description": "Wallet address",
           "schema": {
-            "type": "number",
-            "example": 1
+            "type": "string",
+            "example": "0x235e10f22aA75CcAfF9724cE8e3519E99c786038"
           }
         }
       ],
@@ -47,12 +47,12 @@
         "parameters": [
           {
             "in": "path",
-            "name": "id",
+            "name": "address",
             "required": true,
-            "description": "Wallet id",
+            "description": "Wallet address",
             "schema": {
-              "type": "integer",
-              "example": 1
+              "type": "string",
+              "example": "0x235e10f22aA75CcAfF9724cE8e3519E99c786038"
             }
           }
         ],
@@ -82,24 +82,10 @@
             }
           }
         }
-      }
-    },
-    "/wallet/{userId}": {
+      },
       "post": {
         "tags": ["Wallet"],
         "summary": "Create a new wallet in system",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "userId",
-            "required": true,
-            "description": "Wallet's user id",
-            "schema": {
-              "type": "number",
-              "example": 1
-            }
-          }
-        ],
         "produces": ["application/json"],
         "responses": {
           "200": {
@@ -324,10 +310,6 @@
           "type": "number",
           "example": 1
         },
-        "userId": {
-          "type": "number",
-          "example": 1
-        },
         "address": {
           "type": "string",
           "example": "0x6EB5d800214510B5d6e30c249C6EEF6651Ec74a6"
@@ -345,9 +327,9 @@
           "type": "string",
           "example": "0.00001"
         },
-        "senderId": {
-          "type": "number",
-          "example": 2
+        "senderAddress": {
+          "type": "string",
+          "example": "0xF3a225e3b022c9F252d162ede018330D036060fF"
         }
       }
     },
@@ -358,9 +340,9 @@
           "type": "string",
           "example": "0.00001"
         },
-        "senderId": {
-          "type": "number",
-          "example": 2
+        "senderAddress": {
+          "type": "string",
+          "example": "0xF3a225e3b022c9F252d162ede018330D036060fF"
         }
       }
     },
@@ -371,9 +353,9 @@
           "type": "string",
           "example": "0.00001"
         },
-        "receiverId": {
-          "type": "number",
-          "example": 2
+        "receiverAddress": {
+          "type": "string",
+          "example": "0x2AE9c10b967DD38Cdd9689C6958B794AB68e00F5"
         }
       }
     },
@@ -384,13 +366,13 @@
           "type": "string",
           "example": "0.00001"
         },
-        "senderId": {
-          "type": "number",
-          "example": 2
+        "senderAddress": {
+          "type": "string",
+          "example": "0xF3a225e3b022c9F252d162ede018330D036060fF"
         },
-        "receiverId": {
-          "type": "number",
-          "example": 2
+        "receiverAddress": {
+          "type": "string",
+          "example": "0x2AE9c10b967DD38Cdd9689C6958B794AB68e00F5"
         }
       }
     },
@@ -406,9 +388,9 @@
           "example": "0.00001"
         },
 
-        "senderId": {
-          "type": "number",
-          "example": 2
+        "senderAddress": {
+          "type": "string",
+          "example": "0xF3a225e3b022c9F252d162ede018330D036060fF"
         }
       }
     },
@@ -419,9 +401,9 @@
           "type": "string",
           "example": "0.00001"
         },
-        "retrieverId": {
-          "type": "number",
-          "example": 2
+        "retrieverAddress": {
+          "type": "string",
+          "example": "0x2AE9c10b967DD38Cdd9689C6958B794AB68e00F5"
         }
       }
     },
