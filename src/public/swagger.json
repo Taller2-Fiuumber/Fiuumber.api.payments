@@ -115,7 +115,7 @@
       }
     },
 
-    "/deposit/transfer": {
+    "/deposit/withdrawOwner": {
       "post": {
         "tags": ["Deposit"],
         "summary": "Get wallet with given ID",
@@ -144,7 +144,35 @@
         }
       }
     },
-
+    "/retrieveFromWallet": {
+      "post": {
+        "tags": ["Deposit"],
+        "summary": "Retrieve certain amount of money from wallet",
+        "requestBody": {
+          "description": "Administrator Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/DepositFromRetrieve"
+              }
+            }
+          }
+        },
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/DepositFromRetrieve"
+            }
+          },
+          "404": {
+            "description": "Failed. Deposit not found."
+          }
+        }
+      }
+    },
     "/depositFromSender": {
       "post": {
         "tags": ["Deposit"],
@@ -379,6 +407,19 @@
         },
 
         "senderId": {
+          "type": "number",
+          "example": 2
+        }
+      }
+    },
+    "DepositFromRetrieve": {
+      "type": "object",
+      "properties": {
+        "amountInEthers": {
+          "type": "string",
+          "example": "0.00001"
+        },
+        "retrieverId": {
           "type": "number",
           "example": 2
         }

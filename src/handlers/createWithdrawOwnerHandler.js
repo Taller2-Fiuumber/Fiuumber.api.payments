@@ -14,7 +14,7 @@ function schema() {
 
 function handler({ contractInteraction }) {
   return async function (req, reply) {
-    return reply.code(200).send(await contractInteraction.transfer(req.body.amountInEthers));
+    return reply.code(200).send(await contractInteraction.withdrawOwner(req.body.amountInEthers));
   };
 }
 

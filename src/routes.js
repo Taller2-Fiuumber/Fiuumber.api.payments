@@ -5,7 +5,9 @@ const getWalletsData = require("./handlers/getWalletsHandler");
 const createDepositFromSender = require("./handlers/createDepositFromSenderHandler");
 const createDepositToReceiver = require("./handlers/createDepositToReceiverHandler");
 const createDepositFromSenderToReceiver = require("./handlers/createDepositFromSenderToReceiverHandler");
-const createTransferDeposit = require("./handlers/createTransferHandler");
+const createWithdrawOwner = require("./handlers/createWithdrawOwnerHandler");
+const createRetrieveFromWallet = require("./handlers/createRetrieveFromWalletHandler");
+
 const getDeposit = require("./handlers/getDepositHandler");
 const getAllDeposit = require("./handlers/getAllDepositHandler");
 
@@ -47,6 +49,15 @@ function createDepositToReceiverRoute({ services, config }) {
   };
 }
 
+function createRetrieveFromWalletRoute({ services, config }) {
+  return {
+    method: "POST",
+    url: "/api/wallets-service/retrieveFromWallet",
+    schema: createRetrieveFromWallet.schema(config),
+    handler: createRetrieveFromWallet.handler({ config, ...services }),
+  };
+}
+
 function createDepositFromSenderRoute({ services, config }) {
   return {
     method: "POST",
@@ -65,12 +76,12 @@ function createDepositFromSenderToReceiverRoute({ services, config }) {
   };
 }
 
-function createTransferDepositRoute({ services, config }) {
+function createWithdrawOwnerRoute({ services, config }) {
   return {
     method: "POST",
-    url: "/api/wallets-service/deposit/transfer",
-    schema: createTransferDeposit.schema(config),
-    handler: createTransferDeposit.handler({ config, ...services }),
+    url: "/api/wallets-service/deposit/withdrawOwner",
+    schema: createWithdrawOwner.schema(config),
+    handler: createWithdrawOwner.handler({ config, ...services }),
   };
 }
 
@@ -108,7 +119,8 @@ module.exports = [
   createDepositFromSenderToReceiverRoute,
   createDepositFromSenderRoute,
   createDepositToReceiverRoute,
-  createTransferDepositRoute,
+  createWithdrawOwnerRoute,
+  createRetrieveFromWalletRoute,
   getDepositRoute,
   getAllDepositRoute,
   getHomeRoute,
