@@ -327,9 +327,9 @@
           "type": "string",
           "example": "0.00001"
         },
-        "senderId": {
-          "type": "number",
-          "example": 2
+        "senderAddress": {
+          "type": "string",
+          "example": "0xF3a225e3b022c9F252d162ede018330D036060fF"
         }
       }
     },
@@ -340,9 +340,9 @@
           "type": "string",
           "example": "0.00001"
         },
-        "senderId": {
-          "type": "number",
-          "example": 2
+        "senderAddress": {
+          "type": "string",
+          "example": "0xF3a225e3b022c9F252d162ede018330D036060fF"
         }
       }
     },
@@ -353,9 +353,9 @@
           "type": "string",
           "example": "0.00001"
         },
-        "receiverId": {
-          "type": "number",
-          "example": 2
+        "receiverAddress": {
+          "type": "string",
+          "example": "0x2AE9c10b967DD38Cdd9689C6958B794AB68e00F5"
         }
       }
     },
@@ -366,13 +366,13 @@
           "type": "string",
           "example": "0.00001"
         },
-        "senderId": {
-          "type": "number",
-          "example": 2
+        "senderAddress": {
+          "type": "string",
+          "example": "0xF3a225e3b022c9F252d162ede018330D036060fF"
         },
-        "receiverId": {
-          "type": "number",
-          "example": 2
+        "receiverAddress": {
+          "type": "string",
+          "example": "0x2AE9c10b967DD38Cdd9689C6958B794AB68e00F5"
         }
       }
     },
@@ -388,9 +388,9 @@
           "example": "0.00001"
         },
 
-        "senderId": {
-          "type": "number",
-          "example": 2
+        "senderAddress": {
+          "type": "string",
+          "example": "0xF3a225e3b022c9F252d162ede018330D036060fF"
         }
       }
     },
@@ -401,9 +401,9 @@
           "type": "string",
           "example": "0.00001"
         },
-        "retrieverId": {
-          "type": "number",
-          "example": 2
+        "retrieverAddress": {
+          "type": "string",
+          "example": "0x2AE9c10b967DD38Cdd9689C6958B794AB68e00F5"
         }
       }
     },

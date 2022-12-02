@@ -133,7 +133,7 @@ const depositFromSender =
             txHash: tx.hash,
             address: firstEvent.args.receiver,
             amountSent: amountToSend,
-            type: "from receiver to owner",
+            type: "from owner to receiver",
           };
           MongoClient.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
             .then(client => {
