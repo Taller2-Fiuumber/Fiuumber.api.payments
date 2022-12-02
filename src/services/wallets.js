@@ -14,6 +14,23 @@ const getDeployerWallet =
     return wallet;
   };
 
+  const getBalance =
+  ({ config }) =>
+  async (address) => {
+    const provider = new ethers.providers.AlchemyProvider(config.network, config.infuraApiKey);
+
+    return provider.getBalance(address)
+    .then((balance) => {
+      const balanceInEth = ethers.utils.formatEther(balance)
+
+      return balanceInEth
+     })
+    .catch(err => {
+      return err;
+    });
+  };
+
+
 const createWallet =
   ({ config }) =>
   async () => {
@@ -78,4 +95,5 @@ module.exports = ({ config }) => ({
   getWalletsData: getWalletsData({ config }),
   getWalletData: getWalletData({ config }),
   getWallet: getWallet({ config }),
+  getBalance: getBalance({ config }),
 });
