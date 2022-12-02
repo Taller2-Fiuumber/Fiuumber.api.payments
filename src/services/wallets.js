@@ -16,15 +16,14 @@ const getDeployerWallet =
 
 const createWallet =
   ({ config }) =>
-  userId => {
+  async () => {
     const provider = new ethers.providers.AlchemyProvider(config.network, config.infuraApiKey);
     // This may break in some environments, keep an eye on it
-    const wallet = ethers.Wallet.fromMnemonic(config.deployerMnemonic).connect(provider);
+    const wallet = ethers.Wallet.createRandom().connect(provider);
 
     return MongoClient.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
       .then(client => {
         const doc = {
-          userId: userId,
           address: wallet.address,
           privateKey: wallet.privateKey,
         };
@@ -50,21 +49,22 @@ const getWalletsData =
 
 const getWalletData =
   ({ config }) =>
-  userId => {
+  async (address) => {
     return MongoClient.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
       .then(client => {
-        return client.db(process.env.DB_NAME).collection("wallet").find({ userId: userId }).toArray();
+        return client.db(process.env.DB_NAME).collection("wallet").find({ "address": address }).toArray();
       })
       .catch(err => {
         return err;
       });
   };
 
-const getWallet = ({ config }) => userId => {
+const getWallet = ({ config }) =>
+    async (address) => {
     return MongoClient.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
       .then(async client => {
         const provider = new ethers.providers.AlchemyProvider(config.network, process.env.ALCHEMY_API_KEY);
-        let a_wallet = await client.db(process.env.DB_NAME).collection("wallet").find({ "userId": userId }).toArray();
+        let a_wallet = await client.db(process.env.DB_NAME).collection("wallet").find({ "address": address }).toArray();
         return new ethers.Wallet(a_wallet[0].privateKey, provider);
       })
       .catch(err => {

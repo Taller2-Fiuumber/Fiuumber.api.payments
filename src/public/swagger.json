@@ -28,16 +28,16 @@
   "consumes": ["application/json"],
   "produces": ["application/json"],
   "paths": {
-    "/wallet/{id}": {
+    "/wallet/{address}": {
       "parameters": [
         {
           "in": "path",
-          "name": "id",
+          "name": "address",
           "required": true,
-          "description": "Wallet id",
+          "description": "Wallet address",
           "schema": {
-            "type": "number",
-            "example": 1
+            "type": "string",
+            "example": "0x235e10f22aA75CcAfF9724cE8e3519E99c786038"
           }
         }
       ],
@@ -47,12 +47,12 @@
         "parameters": [
           {
             "in": "path",
-            "name": "id",
+            "name": "address",
             "required": true,
-            "description": "Wallet id",
+            "description": "Wallet address",
             "schema": {
-              "type": "integer",
-              "example": 1
+              "type": "string",
+              "example": "0x235e10f22aA75CcAfF9724cE8e3519E99c786038"
             }
           }
         ],
@@ -82,24 +82,10 @@
             }
           }
         }
-      }
-    },
-    "/wallet/{userId}": {
+      },
       "post": {
         "tags": ["Wallet"],
         "summary": "Create a new wallet in system",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "userId",
-            "required": true,
-            "description": "Wallet's user id",
-            "schema": {
-              "type": "number",
-              "example": 1
-            }
-          }
-        ],
         "produces": ["application/json"],
         "responses": {
           "200": {
@@ -321,10 +307,6 @@
       "type": "object",
       "properties": {
         "_id": {
-          "type": "number",
-          "example": 1
-        },
-        "userId": {
           "type": "number",
           "example": 1
         },

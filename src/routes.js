@@ -16,7 +16,7 @@ const getHome = require("./handlers/getHomeHandler");
 function getWalletDataRoute({ services, config }) {
   return {
     method: "GET",
-    url: "/api/wallets-service/wallet/:userId",
+    url: "/api/wallets-service/wallet/:address",
     schema: getWalletData.schema(config),
     handler: getWalletData.handler({ config, ...services }),
   };
@@ -34,7 +34,7 @@ function getWalletsDataRoute({ services, config }) {
 function createWalletRoute({ services, config }) {
   return {
     method: "POST",
-    url: "/api/wallets-service/wallet/:userId",
+    url: "/api/wallets-service/wallet",
     schema: createWallet.schema(config),
     handler: createWallet.handler({ config, ...services }),
   };
