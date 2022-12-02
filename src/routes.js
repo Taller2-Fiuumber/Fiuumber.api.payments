@@ -2,8 +2,9 @@ const createWallet = require("./handlers/createWalletHandler");
 const getWalletData = require("./handlers/getWalletHandler");
 const getWalletsData = require("./handlers/getWalletsHandler");
 
-const createDepositFromSender = require("./handlers/createDepositFromSenderRoute");
+const createDepositFromSender = require("./handlers/createDepositFromSenderHandler");
 const createDepositToReceiver = require("./handlers/createDepositToReceiverHandler");
+const createDepositFromSenderToReceiver = require("./handlers/createDepositFromSenderToReceiverHandler");
 const createTransferDeposit = require("./handlers/createTransferHandler");
 const getDeposit = require("./handlers/getDepositHandler");
 const getAllDeposit = require("./handlers/getAllDepositHandler");
@@ -55,6 +56,14 @@ function createDepositFromSenderRoute({ services, config }) {
   };
 }
 
+function createDepositFromSenderToReceiverRoute({ services, config }) {
+  return {
+    method: "POST",
+    url: "/api/wallets-service/depositFromSenderToReceiver",
+    schema: createDepositFromSenderToReceiver.schema(config),
+    handler: createDepositFromSenderToReceiver.handler({ config, ...services }),
+  };
+}
 
 function createTransferDepositRoute({ services, config }) {
   return {
@@ -96,6 +105,7 @@ module.exports = [
   getWalletDataRoute,
   getWalletsDataRoute,
   createWalletRoute,
+  createDepositFromSenderToReceiverRoute,
   createDepositFromSenderRoute,
   createDepositToReceiverRoute,
   createTransferDepositRoute,

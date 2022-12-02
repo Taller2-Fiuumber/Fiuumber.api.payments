@@ -49,9 +49,22 @@ const transfer = ({ config }) => async amountToSend => {
   return tx;
 };
 
+const depositFromSenderToReceiver =
+  ({ config }) =>
+  async (senderWallet, receiverWallet, amountToSend) => {
+    console.log("================depositFromSenderToReceiver config", config)
+
+    const a = await depositFromSender({config})(senderWallet, amountToSend)
+    const b = await depositToReceiver({config})(receiverWallet, amountToSend)
+    return [a, b]
+  };
+
 const depositFromSender =
   ({ config }) =>
   async (senderWallet, amountToSend) => {
+    console.log("_______________config", config);
+    console.log("_______________senderWallet", senderWallet);
+    console.log("_______________amountToSend", amountToSend);
 
     const basicPayments = await getContract(config, senderWallet);
     const tx = await basicPayments.deposit({
@@ -99,7 +112,8 @@ const depositFromSender =
   const depositToReceiver =
     ({ config }) =>
     async (receiverWallet, amountToSend) => {
-    console.log("___________receiverWallet", receiverWallet);
+    console.log("_______________receiverWallet", receiverWallet);
+
 
     const provider = new ethers.providers.AlchemyProvider(config.network, config.infuraApiKey);
     const fiuumberWallet = ethers.Wallet.fromMnemonic(config.deployerMnemonic).connect(provider);
@@ -169,6 +183,7 @@ module.exports = dependencies => ({
   transfer: transfer(dependencies),
   depositFromSender: depositFromSender(dependencies),
   depositToReceiver: depositToReceiver(dependencies),
+  depositFromSenderToReceiver: depositFromSenderToReceiver(dependencies),
   getDepositReceipt: getDepositReceipt(dependencies),
   getAllDepositReceipt: getAllDepositReceipt(dependencies),
 });
