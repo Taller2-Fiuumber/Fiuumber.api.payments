@@ -20,7 +20,7 @@ const withdrawOwner = ({ config }) => async amountToSend => {
         let doc = {
           txHash: tx.hash,
           address: firstEvent.args.sender,
-          amountSent: amountToSend,
+          amountSent: firstEvent.args.amount.toNumber(),
           type: "withdraw owner",
         };
         MongoClient.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
@@ -82,7 +82,7 @@ const depositFromSender =
           let doc = {
             txHash: tx.hash,
             address: firstEvent.args.sender,
-            amountSent: amountToSend,
+            amountSent: firstEvent.args.amount.toNumber(),
             type: "from sender to owner",
           };
           MongoClient.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
@@ -132,7 +132,7 @@ const depositFromSender =
           let doc = {
             txHash: tx.hash,
             address: firstEvent.args.receiver,
-            amountSent: amountToSend,
+            amountSent: firstEvent.args.amount.toNumber(),
             type: "from owner to receiver",
           };
           MongoClient.connect(process.env.DATABASE_URL, { useNewUrlParser: true })

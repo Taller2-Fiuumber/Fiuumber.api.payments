@@ -69,7 +69,45 @@
         }
       }
     },
+    "/wallet/balance/{address}": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "address",
+          "required": true,
+          "description": "Wallet address",
+          "schema": {
+            "type": "string",
+            "example": "0x235e10f22aA75CcAfF9724cE8e3519E99c786038"
+          }
+        }
+      ],
 
+      "get": {
+        "tags": ["Wallet"],
+        "summary": "Get all wallets in system",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "address",
+            "required": true,
+            "description": "Wallet address",
+            "schema": {
+              "type": "string",
+              "example": "0x235e10f22aA75CcAfF9724cE8e3519E99c786038"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Wallet"
+            }
+          }
+        }
+      }
+    },
     "/wallet": {
       "get": {
         "tags": ["Wallet"],
