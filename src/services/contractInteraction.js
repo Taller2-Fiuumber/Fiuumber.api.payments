@@ -69,6 +69,9 @@ const depositFromSender =
   ({ config }) =>
   async (senderWallet, amountToSend) => {
 
+    console.log("depositFromSender -> ETH: ", amountToSend);
+    console.log("depositFromSender -> WALLET: ", senderWallet);
+
     const basicPayments = await getContract(config, senderWallet);
     const tx = await basicPayments.deposit({
       value: await ethers.utils.parseEther(amountToSend).toHexString(),
@@ -115,7 +118,8 @@ const depositFromSender =
   const depositToReceiver =
     ({ config }) =>
     async (receiverWallet, amountToSend) => {
-
+    console.log("depositToReceiver -> ETH: ", amountToSend);
+    console.log("depositToReceiver -> WALLET: ", receiverWallet);
     const provider = new ethers.providers.AlchemyProvider(config.network, config.infuraApiKey);
     const fiuumberWallet = ethers.Wallet.fromMnemonic(config.deployerMnemonic).connect(provider);
     const basicPayments = getContract(config, fiuumberWallet);
