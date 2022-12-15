@@ -7,6 +7,7 @@ const createDepositToReceiver = require("./handlers/createDepositToReceiverHandl
 const createDepositFromSenderToReceiver = require("./handlers/createDepositFromSenderToReceiverHandler");
 const createWithdrawOwner = require("./handlers/createWithdrawOwnerHandler");
 const createRetrieveFromWallet = require("./handlers/createRetrieveFromWalletHandler");
+const getAllDepositReceiptByAddress = require("./handlers/getAllDepositReceiptByAddressHandler");
 
 const getWalletBalance = require("./handlers/getWalletBalanceHandler");
 
@@ -144,6 +145,16 @@ function deleteAllWalletsRoute({ services, config }) {
   };
 }
 
+function getAllDepositReceiptByAddressRoute({ services, config }) {
+  return {
+    method: "GET",
+    url: "/api/wallets-service/deposit",
+    schema: getAllDepositReceiptByAddress.schema(config),
+    handler: getAllDepositReceiptByAddress.handler({ config, ...services }),
+  };
+}
+
+
 module.exports = [
   getWalletDataRoute,
   getWalletsDataRoute,
@@ -159,4 +170,5 @@ module.exports = [
   getHomeRoute,
   deleteAllDepositsRoute,
   deleteAllWalletsRoute,
+  getAllDepositReceiptByAddressRoute,
 ];

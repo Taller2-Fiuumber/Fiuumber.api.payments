@@ -18,5 +18,4 @@ function handler({ contractInteraction }) {
   };
 }
 
-
 module.exports = { handler, schema };
