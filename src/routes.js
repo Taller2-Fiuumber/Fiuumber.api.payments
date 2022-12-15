@@ -148,7 +148,7 @@ function deleteAllWalletsRoute({ services, config }) {
 function getAllDepositReceiptByAddressRoute({ services, config }) {
   return {
     method: "GET",
-    url: "/api/wallets-service/deposit",
+    url: "/api/wallets-service/deposits/address",
     schema: getAllDepositReceiptByAddress.schema(config),
     handler: getAllDepositReceiptByAddress.handler({ config, ...services }),
   };
