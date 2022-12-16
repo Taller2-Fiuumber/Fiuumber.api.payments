@@ -14,22 +14,22 @@ const getDeployerWallet =
     return wallet;
   };
 
-  const getBalance =
+const getBalance =
   ({ config }) =>
-  async (address) => {
+  async address => {
     const provider = new ethers.providers.AlchemyProvider(config.network, config.infuraApiKey);
 
-    return provider.getBalance(address)
-    .then((balance) => {
-      const balanceInEth = ethers.utils.formatEther(balance)
+    return provider
+      .getBalance(address)
+      .then(balance => {
+        const balanceInEth = ethers.utils.formatEther(balance);
 
-      return balanceInEth
-     })
-    .catch(err => {
-      return err;
-    });
+        return balanceInEth;
+      })
+      .catch(err => {
+        return err;
+      });
   };
-
 
 const createWallet =
   ({ config }) =>
@@ -66,22 +66,23 @@ const getWalletsData =
 
 const getWalletData =
   ({ config }) =>
-  async (address) => {
+  async address => {
     return MongoClient.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
       .then(client => {
-        return client.db(process.env.DB_NAME).collection("wallet").find({ "address": address }).toArray();
+        return client.db(process.env.DB_NAME).collection("wallet").find({ address: address }).toArray();
       })
       .catch(err => {
         return err;
       });
   };
 
-const getWallet = ({ config }) =>
-    async (address) => {
+const getWallet =
+  ({ config }) =>
+  async address => {
     return MongoClient.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
       .then(async client => {
         const provider = new ethers.providers.AlchemyProvider(config.network, process.env.ALCHEMY_API_KEY);
-        let a_wallet = await client.db(process.env.DB_NAME).collection("wallet").find({ "address": address }).toArray();
+        let a_wallet = await client.db(process.env.DB_NAME).collection("wallet").find({ address: address }).toArray();
         return new ethers.Wallet(a_wallet[0].privateKey, provider);
       })
       .catch(err => {
@@ -89,15 +90,17 @@ const getWallet = ({ config }) =>
       });
   };
 
-const deleteAllWallets = ({ config }) => async () => {
-  return MongoClient.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
-    .then( client => {
-      return client.db(process.env.DB_NAME).collection("wallet").deleteMany({});
-    })
-    .catch(err => {
-      return err;
-    });
-};
+const deleteAllWallets =
+  ({ config }) =>
+  async () => {
+    return MongoClient.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
+      .then(client => {
+        return client.db(process.env.DB_NAME).collection("wallet").deleteMany({});
+      })
+      .catch(err => {
+        return err;
+      });
+  };
 
 module.exports = ({ config }) => ({
   createWallet: createWallet({ config }),

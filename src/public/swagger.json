@@ -354,6 +354,55 @@
           }
         }
       }
+    },
+    "/deposits/address": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "address",
+          "required": true,
+          "description": "Wallet address",
+          "schema": {
+            "type": "string",
+            "example": "0x921340bfe5f055871a7b85e64c8992f0c9f7871b2ca4303e695a9915375c951f"
+          }
+        },
+        {
+          "in": "path",
+          "name": "skip",
+          "required": true,
+          "description": "Skip tx",
+          "schema": {
+            "type": "number",
+            "example": 0
+          }
+        },
+        {
+          "in": "path",
+          "name": "take",
+          "required": true,
+          "description": "Take tx",
+          "schema": {
+            "type": "number",
+            "example": 10
+          }
+        }
+      ],
+      "get": {
+        "tags": ["Deposit"],
+        "summary": "Get a deposit by its hash",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Deposit"
+            }
+          },
+          "404": {
+            "description": "Failed. Deposit not found."
+          }
+        }
+      }
     }
   },
 

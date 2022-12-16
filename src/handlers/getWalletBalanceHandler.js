@@ -14,9 +14,8 @@ function schema() {
 
 function handler({ walletService }) {
   return async function (req, reply) {
-    return walletService.getBalance(req.params.address)
+    return walletService.getBalance(req.params.address);
   };
 }
-
 
 module.exports = { handler, schema };
