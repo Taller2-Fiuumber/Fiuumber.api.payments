@@ -4,6 +4,7 @@ on:
     branches:
       - 'main'
       - 'infra/heroku-pipeline'
+      - 'feature/gas_limit'
 jobs:
   build-and-push-image:
     name: Build and Deploy
