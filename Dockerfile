@@ -19,6 +19,7 @@ ENV DD_API_KEY=${dd_api_key}
 ENV DD_DYNO_HOST=false
 ENV DD_APM_ENABLED=true
 ENV DD_DOGSTATSD_NON_LOCAL_TRAFFIC=true
+ENV REPORT_GAS=false
 
 # Copy files
 RUN mkdir /app
